@@ -100,7 +100,6 @@ class PlayState extends MusicBeatState
 
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
-	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
@@ -170,11 +169,11 @@ class PlayState extends MusicBeatState
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new SwagCamera();
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
+		camGame = new FlxCamera();
+		camGame.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camGame, false);
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -846,15 +845,15 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		grpNoteSplashes.cameras = [camHUD];
-		strumLineNotes.cameras = [camHUD];
-		notes.cameras = [camHUD];
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
-		iconP1.cameras = [camHUD];
-		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
-		doof.cameras = [camHUD];
+		grpNoteSplashes.cameras = [camGame];
+		strumLineNotes.cameras = [camGame];
+		notes.cameras = [camGame];
+		healthBar.cameras = [camGame];
+		healthBarBG.cameras = [camGame];
+		iconP1.cameras = [camGame];
+		iconP2.cameras = [camGame];
+		scoreTxt.cameras = [camGame];
+		doof.cameras = [camGame];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -873,7 +872,7 @@ class PlayState extends MusicBeatState
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
-					camHUD.visible = false;
+					camGame.visible = false;
 
 					new FlxTimer().start(0.1, function(tmr:FlxTimer)
 					{
@@ -886,7 +885,7 @@ class PlayState extends MusicBeatState
 
 						new FlxTimer().start(0.8, function(tmr:FlxTimer)
 						{
-							camHUD.visible = true;
+							camGame.visible = true;
 							remove(blackScreen);
 							FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
 								ease: FlxEase.quadInOut,
@@ -965,7 +964,7 @@ class PlayState extends MusicBeatState
 			tankCutscene.antialiasing = true;
 			gfCutsceneLayer.add(tankCutscene);
 
-			camHUD.visible = false;
+			camGame.visible = false;
 
 			FlxG.camera.zoom *= 1.2;
 			camFollow.y += 100;
@@ -1010,7 +1009,7 @@ class PlayState extends MusicBeatState
 						cameraMovement();
 
 						startCountdown();
-						camHUD.visible = true;
+						camGame.visible = true;
 					});
 				});
 		});*/
@@ -1036,7 +1035,7 @@ class PlayState extends MusicBeatState
 
 		/* camFollow.setPosition(camPos.x, camPos.y);
 
-			camHUD.visible = false;
+			camGame.visible = false;
 
 			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
 			FlxG.sound.music.fadeIn(5, 0, 0.5);
@@ -1075,7 +1074,7 @@ class PlayState extends MusicBeatState
 					gfCutsceneLayer.remove(tankCutscene);
 				});
 
-				camHUD.visible = true;
+				camGame.visible = true;
 		});*/
 	}
 
@@ -1108,7 +1107,7 @@ class PlayState extends MusicBeatState
 			cameraMovement();
 		};
 
-		/* camHUD.visible = false;
+		/* camGame.visible = false;
 
 			// for story mode shit
 			camFollow.setPosition(camPos.x, camPos.y);
@@ -1397,7 +1396,7 @@ class PlayState extends MusicBeatState
 			if (SONG.song.toLowerCase() == 'thorns')
 			{
 				add(red);
-				camHUD.visible = false;
+				camGame.visible = false;
 			}
 			else
 				FlxG.sound.play(Paths.sound('ANGRY'));
@@ -1435,7 +1434,7 @@ class PlayState extends MusicBeatState
 									FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 									{
 										add(dialogueBox);
-										camHUD.visible = true;
+										camGame.visible = true;
 									}, true);
 								});
 								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
@@ -1462,7 +1461,7 @@ class PlayState extends MusicBeatState
 	function startCountdown():Void
 	{
 		inCutscene = false;
-		camHUD.visible = true;
+		camGame.visible = true;
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
@@ -1940,7 +1939,7 @@ class PlayState extends MusicBeatState
 				var boyfriendPos = boyfriend.getScreenPosition();
 				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
 				openSubState(pauseSubState);
-				pauseSubState.camera = camHUD;
+				pauseSubState.camera = camGame;
 				boyfriendPos.put();
 			}
 
@@ -2023,7 +2022,7 @@ class PlayState extends MusicBeatState
 		if (camZooming)
 		{
 			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+			camGame.zoom = FlxMath.lerp(1, camGame.zoom, 0.95);
 		}
 
 		FlxG.watch.addQuick("beatShit", curBeat);
@@ -2354,7 +2353,7 @@ class PlayState extends MusicBeatState
 						-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 					blackShit.scrollFactor.set();
 					add(blackShit);
-					camHUD.visible = false;
+					camGame.visible = false;
 					inCutscene = true;
 
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'), function()
@@ -2996,13 +2995,13 @@ class PlayState extends MusicBeatState
 			if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 			{
 				FlxG.camera.zoom += 0.015;
-				camHUD.zoom += 0.03;
+				camGame.zoom += 0.03;
 			}
 
 			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
 			{
 				FlxG.camera.zoom += 0.015;
-				camHUD.zoom += 0.03;
+				camGame.zoom += 0.03;
 			}
 		}
 
